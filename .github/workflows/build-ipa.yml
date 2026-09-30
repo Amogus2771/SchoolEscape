@@ -16,17 +16,21 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install Capacitor & Setup Config
+      - name: Prepare Web Assets & Install Capacitor
         run: |
           if [ ! -f package.json ]; then
             echo '{"name": "school-escape", "version": "1.0.0", "private": true}' > package.json
           fi
           
+          mkdir -p www
+          find . -maxdepth 1 -type f ! -name "package*.json" ! -name "capacitor.config.json" -exec cp {} www/ \;
+          if [ -d "assets" ]; then cp -r assets www/ || true; fi
+          if [ -d "css" ]; then cp -r css www/ || true; fi
+          if [ -d "js" ]; then cp -r js www/ || true; fi
+          
           npm install @capacitor/core @capacitor/cli @capacitor/ios --yes
           
-          if [ ! -f capacitor.config.json ]; then
-            echo '{"appId": "com.schoolescape.app", "appName": "SchoolEscape", "webDir": "."}' > capacitor.config.json
-          fi
+          echo '{"appId": "com.schoolescape.app", "appName": "SchoolEscape", "webDir": "www"}' > capacitor.config.json
           
           npx --yes cap add ios
           npx --yes cap copy
