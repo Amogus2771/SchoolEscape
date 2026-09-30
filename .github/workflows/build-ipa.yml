@@ -33,6 +33,11 @@ jobs:
           echo '{"appId": "com.schoolescape.app", "appName": "SchoolEscape", "webDir": "www"}' > capacitor.config.json
           
           npx --yes cap add ios
+          
+          # Підвищуємо версію iOS в Podfile
+          sed -i '' "s/platform :ios, '.*'/platform :ios, '13.0'/g" ios/App/Podfile || true
+          
+          npx --yes cap update ios
           npx --yes cap copy
 
       - name: Build Xcode Archive
