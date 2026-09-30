@@ -14,7 +14,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
 
       - name: Prepare Web Assets & Install Capacitor
         run: |
@@ -28,16 +28,11 @@ jobs:
           if [ -d "css" ]; then cp -r css www/ || true; fi
           if [ -d "js" ]; then cp -r js www/ || true; fi
           
-          npm install @capacitor/core @capacitor/cli @capacitor/ios --yes
+          npm install @capacitor/core@5 @capacitor/cli@5 @capacitor/ios@5 --yes
           
           echo '{"appId": "com.schoolescape.app", "appName": "SchoolEscape", "webDir": "www"}' > capacitor.config.json
           
           npx --yes cap add ios
-          
-          # Підвищуємо версію iOS в Podfile
-          sed -i '' "s/platform :ios, '.*'/platform :ios, '13.0'/g" ios/App/Podfile || true
-          
-          npx --yes cap update ios
           npx --yes cap copy
 
       - name: Build Xcode Archive
