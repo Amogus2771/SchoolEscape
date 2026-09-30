@@ -18,10 +18,12 @@ jobs:
 
       - name: Install Capacitor & Dependencies
         run: |
-          npm init -y
-          npm install @capacitor/core @capacitor/cli @capacitor/ios
-          npx cap init "SchoolEscape" "com.schoolescape.app" --web-dir .
-          npx cap add ios
+          if [ ! -f package.json ]; then npm init -y; fi
+          npm install @capacitor/core@latest @capacitor/cli@latest @capacitor/ios@latest
+          if [ ! -f capacitor.config.json ] && [ ! -f capacitor.config.ts ]; then
+            npx cap init "SchoolEscape" "com.schoolescape.app" --web-dir .
+          fi
+          npx cap add ios || true
           npx cap copy
 
       - name: Build Xcode Archive
