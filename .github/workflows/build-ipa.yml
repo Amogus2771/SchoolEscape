@@ -22,14 +22,14 @@ jobs:
             echo '{"name": "school-escape", "version": "1.0.0", "private": true}' > package.json
           fi
           
-          npm install @capacitor/core @capacitor/cli @capacitor/ios
+          npm install @capacitor/core @capacitor/cli @capacitor/ios --yes
           
           if [ ! -f capacitor.config.json ]; then
             echo '{"appId": "com.schoolescape.app", "appName": "SchoolEscape", "webDir": "."}' > capacitor.config.json
           fi
           
-          npx cap add ios
-          npx cap copy
+          npx --yes cap add ios
+          npx --yes cap copy
 
       - name: Build Xcode Archive
         run: |
